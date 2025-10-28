@@ -45,7 +45,7 @@ Failover occurs if the active app:
 1. Docker & Docker Compose
 2. NGINX reverse proxy
 3. Health checks + failover logic
-4. GitHub Actions CI pipeline
+4. Google Cloud Compute Engine (VM deployment)
 5. Environment-driven configuration
 
 
@@ -133,29 +133,45 @@ Recreate proxy:
     This repository contains:
         1. .github/workflows/stage2.yml
 
+☁️ Cloud Deployment
 
-⚙️ GitHub Actions CI Integration
-This repository includes a workflow:
-    1. Boots entire infrastructure
-    2. Waits for /version 200 OK
-    3. Executes failover test script
-    4. Tears everything down afterward
+The entire infrastructure is deployed on Google Cloud Compute Engine.
+The setup includes:
 
-CI file: .github/workflows/ci.yml
+Ubuntu VM with Docker & Docker Compose installed
 
-CI Badges
-    Update repo name first, then paste:
-    ![CI](https://github.com/<user>/<repo>/actions/workflows/ci.yml/badge.svg)
+Blue and Green app containers running simultaneously
 
+NGINX reverse proxy managing failover
 
-Secrets required:
-Name	                Example value
-BLUE_IMAGE	            yimikaade/wonderful:devops-stage-two
-GREEN_IMAGE	            same image OK
+Environment variables configured via .env
+
+🌐 Live URL:
+👉 http://34.58.153.167:8080/
 
 
-Add in:
-Settings → Secrets → Actions
+Google Cloud Deployment Steps
+
+Create a VM (e.g. e2-medium, Ubuntu 22.04 LTS)
+
+SSH into VM:
+
+gcloud compute ssh <instance-name> --zone <your-zone>
+
+
+Install Docker & Docker Compose
+
+Clone this repo (git clone https://github.com/Festiveokagbare/hng-devops-stage2.git)
+and run:
+ ./deploy (To deploy using the script)
+
+Allow firewall for port 8080(nginx), 8081(blue-app) & 8082(green-app):
+
+gcloud compute firewall-rules create allow-http-8080 --allow tcp:8080, 8081, 8082
+
+
+Access via:
+http://<EXTERNAL_IP>:8080
 
 
 👀 Visual Deployment Diagram
@@ -207,7 +223,7 @@ lsof -i :8080
 │   └── start.sh
 ├── test/
 │   └── failover-test.sh
-├── .github/workflows/stage2.yml
+├── deploy.sh
 ├── .env.example
 └── README.md
 
