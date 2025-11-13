@@ -1,7 +1,7 @@
 
 
-HNG DevOps Stage 2: Blue/Green Failover Infrastructure
-<div align="center"> HNG DevOps Stage 2 Blue/Green Deployment · Container Failover · Health Checks · Slack Alerts </div>
+HNG DevOps Stage 3: Blue/Green Failover Infrastructure
+<div align="center"> HNG DevOps Stage 3 Blue/Green Deployment · Container Failover · Health Checks · Slack Alerts </div>
 
 
 🚀 Objective
